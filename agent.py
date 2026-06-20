@@ -48,8 +48,14 @@ def get_task_status(task_id):
         return {"content": "task service authorization failed", "is_error": True}
 
     if resp.status_code == 200:
-        task = resp.json()
+        try:
+            task = resp.json()
+            status = task['status']
+        except (ValueError, KeyError) as e:
+            print(f"[error] get_task_status bad response shape: {e}")
+            return {"content": "task service returned unexpected data", "is_error": True}
         return {"content": f"task {task_id} status is {task['status']}", "is_error": False}
+
     if resp.status_code == 404:
         return {"content": f"task {task_id} not found", "is_error": False}
     return {"content": f"task {task_id} select error (HTTP {resp.status_code})", "is_error": True}
@@ -57,6 +63,7 @@ def get_task_status(task_id):
 available_tools = {
     "get_task_status": get_task_status,
 }
+
 if __name__ == "__main__":
     while True:
         user_input = input("Enter message: ")
