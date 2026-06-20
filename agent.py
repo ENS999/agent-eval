@@ -41,9 +41,11 @@ def get_task_status(task_id):
             headers={"Authorization": f"Bearer {token}"},
         )
     except httpx.RequestError as e:
-        return {"content": f"tools connection failed:{e}", "is_error": True}
+        print(f"[error] get_task_status connection failed: {e}")
+        return {"content": "task service is unreachable", "is_error": True}
     except httpx.HTTPStatusError as e:
-        return {"content": f"tools authorization failed:{e}", "is_erroe": True}
+        print(f"[error] get_task_status authorization failed: {e}")
+        return {"content": "task service authorization failed", "is_error": True}
 
     if resp.status_code == 200:
         task = resp.json()

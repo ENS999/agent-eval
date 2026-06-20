@@ -77,7 +77,7 @@ finally:
     agent.BASE_URL = real_url
 
 bad_words = ["todo", "in_progress", "done"]
-ok = all(w not in reply for w in bad_words)and any(w in reply for w in ["連線", "稍後", "重試", "無法"])
+ok = all(w not in reply for w in bad_words)and any(w in reply for w in ["連線", "稍後", "重試", "無法", "unreachable", "unavailable", "try again", "later"])
 results.append(ok)
 print(f"{'PASS' if ok else 'FAIL'}  第三圈/故障不瞎掰: 回覆裡不該有狀態值，實得 reply={reply!r}")
 
